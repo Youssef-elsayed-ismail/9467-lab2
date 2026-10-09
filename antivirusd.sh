@@ -30,4 +30,24 @@ break
 fi
 done 
 fi
+if [$bad -eq 0] ;
+then for word in "${KEYWORD[@]}"; do
+if grep -qi "$word" "$file" 2>/dev/null;
+then 
+bad=1
+break
+fi
+done 
+fi
+if [$bad -eq 1] ;
+then
+echo "$filename is malicious"
+cp "$file" "$malicious/$filename"
+rm "$file" 
+deleted_any=1
+fi
+done
+return $deleted_any
+}
+
 
