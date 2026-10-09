@@ -1,4 +1,3 @@
-
 DIR ?= watch_dir
 MALICIOUS_DIR ?= quarantine
 INTERVAL ?= 5
