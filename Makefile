@@ -14,4 +14,4 @@ restore: setup
 	./restore.sh $(DIR) $(MALICIOUS_DIR)
 
 clean:
-	rm -rf directory-info.last directory-info.new
+	rm -rf directory-info.last directory-info.new .whitelist

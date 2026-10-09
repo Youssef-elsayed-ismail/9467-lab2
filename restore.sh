@@ -4,6 +4,7 @@ echo "Usage: $0 <dir> <malicious_dir>"
 exit 1
 fi
 DIR="$1"; MALICIOUS_DIR="$2"
+touch .whitelist
 while true; do
 set -- "$MALICIOUS_DIR"/*
 if [ ! -e "$1" ]; then
@@ -36,7 +37,9 @@ echo "2: Permanently delete this file from malicious_dir (it was genuinely malic
 echo "3: Go back"
 printf "> "; read opt
 case "$opt" in
-1) mv "$selected" "$DIR/$filename"; echo "Restored $filename to $DIR." ;;
+1)
+grep -qx "$filename" .whitelist 2>/dev/null || echo "$filename" >> .whitelist
+mv "$selected" "$DIR/$filename"; echo "Restored $filename to $DIR." ;;
 2) rm "$selected"; echo "$filename permanently deleted." ;;
 3) continue ;;
 *) echo "Invalid option." ;;

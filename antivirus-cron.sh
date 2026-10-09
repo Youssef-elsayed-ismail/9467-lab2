@@ -1,14 +1,13 @@
 
-if [ "$#" -ne 3 ]; then
-echo "Usage: $0 <dir> <malicious_dir> <interval-secs>"
+if [ "$#" -ne 2 ]; then
+echo "Usage: $0 <dir> <malicious_dir>"
 exit 1
 fi
-DIR="$1"; MALICIOUS_DIR="$2"; INTERVAL="$3"
+DIR="$1"; MALICIOUS_DIR="$2"
 mkdir -p "$DIR" "$MALICIOUS_DIR"
 touch .whitelist
 EXTENSIONS="exe bat vbs scr ps1"
 KEYWORDS="virus trojan malware worm ransomware"
-scan_dir() {
 for file in "$DIR"/*; do
 [ -f "$file" ] || continue
 filename=$(basename "$file"); is_bad=0
@@ -27,16 +26,5 @@ fi
 if [ "$is_bad" -eq 1 ]; then
 echo "$filename is malicious and it is DELETED"
 cp "$file" "$MALICIOUS_DIR/$filename"; rm "$file"
-fi
-done
-}
-scan_dir
-ls -l "$DIR" > directory-info.last
-while true; do
-sleep "$INTERVAL"
-ls -l "$DIR" > directory-info.new
-if ! diff -q directory-info.last directory-info.new >/dev/null 2>&1; then
-scan_dir
-ls -l "$DIR" > directory-info.last
 fi
 done
