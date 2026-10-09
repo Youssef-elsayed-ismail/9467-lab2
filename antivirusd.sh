@@ -49,5 +49,17 @@ fi
 done
 return $deleted_any
 }
+scan_dir[cite: 2]
+ls -l "$dir" > directory-info.last[cite: 1]
+while true;
+do sleep "$interval"[cite: 2]
+ls -l "$dir" > directory-info.new[cite: 2]
+if !diff -q directory-info.last directory-info.new >/dev/null 2>1;
+then [cite: 2]
+scan_dir[cite: 2]
+ls -l "$dir"> directory-info.last
+fi 
+done 
+
 
 
